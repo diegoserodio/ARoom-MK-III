@@ -1,42 +1,26 @@
 int led = LED_BUILTIN;
-int count = 0;
-const int msg_length = 3;
-char msg[msg_length];
+String message = "";
 
 void setup() {
   pinMode(led, OUTPUT);
-  Serial.begin(256000);
+  Serial.begin(250000);
 }
 
 void loop() {
-  // if(Serial.available() > 0){
-  //   char data = Serial.read();
-  //   if(data == '/'){
-  //     count = 0;
-  //     Serial.println(getInt(msg));
-  //   }
-  //   else{
-  //     msg[count] = data;
-  //     count++;
-  //   }
-  // }
-  Serial.write("HELLO MY CONRADS\n");
-  delay(1000);
-}
-
-int getInt(char data[]){
-  int result = 1;
-  for(int i = 0; i < msg_length; i++){
-    result += (data[i]-'0')*pow(10, msg_length-1-i);
+  while(Serial.available()){
+    delay(2);
+    char c = Serial.read();
+    message += c;
   }
-  return result;
-}
-
-String getString(char data_[]){
-  char result[msg_length];
-  for(int i = 0; i < sizeof(result)/sizeof(result[0]); i++){
-    result[i] = data_[i];
+  if(message.length() > 0){
+    if(message.equals("ledon/")){
+      digitalWrite(led, HIGH);
+      Serial.println("Arduino: Led foi aceso");
+    }
+    else if(message.equals("ledoff/")){
+      digitalWrite(led, LOW);
+      Serial.println("Arduino: Led foi apagado");
+    }
+    message = "";
   }
-  String str(result);
-  return result;
 }
