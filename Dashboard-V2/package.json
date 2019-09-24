@@ -1,0 +1,16 @@
+{
+  "name": "dashboard-v2",
+  "version": "1.0.0",
+  "description": "Version 2 of home automation dashboard",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Diego Costa",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1",
+    "serialport": "^7.1.5",
+    "socket.io": "^2.3.0"
+  }
+}
