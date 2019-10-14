@@ -1,14 +1,69 @@
-.home{
+/* .home{
   text-align: center;
-}
+} */
 
 .card_div{
   display: inline-block;
-  margin: 10px;
-  padding: 10px;
+  padding: 1px;
+  text-align: center;
 }
 
 img{
   margin-left: auto;
   margin-right: auto;
+}
+
+.sliderDiv {
+  text-align: center;
+  float: left;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 50vw;
+  height: 10px;
+  border-radius: 5px;
+  background: #d3d3d3;
+  outline: none;
+  opacity: 0.7;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider.red::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #cd0000;
+  cursor: pointer;
+}
+
+.slider.green::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
+}
+
+.slider.blue::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #3a5fcd;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: #4CAF50;
+  cursor: pointer;
 }

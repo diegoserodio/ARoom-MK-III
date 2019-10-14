@@ -11,14 +11,21 @@ const serialport = new SerialPort('/dev/ttyACM0', { baudRate: 250000 });
 const parser = new Readline();
 serialport.pipe(parser);
 
+var old_command = "";
+
 parser.on('data', function sendMsg(data){
-  io.sockets.emit('arduino', data);
+  // if(data != old_command){
+  //   console.log('Received Arduino responde:', data);
+  //   io.emit('arduino', data);
+  //   old_command = data;
+  // }
+  io.emit('arduino', data);
 });
 
-io.sockets.on('connection', function newConnection(socket) {
+io.on('connection', function newConnection(socket) {
   console.log('New connection: ', socket.id);
   socket.on('serial', function handleSerial(command) {
-    console.log('Received serial command:', command);
+    console.log('Sending Arduino command:', command);
     serialport.write(new Buffer(command.data+'/'));
   });
 });

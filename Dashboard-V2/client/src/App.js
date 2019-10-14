@@ -4,7 +4,7 @@ import './App.css';
 import './Styles/normalize.css';
 import SideBar from './sidebar';
 import Home from './home';
-import socketIOClient from 'socket.io-client'
+// import socketIOClient from 'socket.io-client'
 
 // Making the App component
 class App extends Component {
@@ -45,6 +45,7 @@ class App extends Component {
     // })
     return (
       <div>
+      <script src="https://sdk.scdn.co/spotify-player.js"></script>
         <SideBar />
         <Home />
       </div>

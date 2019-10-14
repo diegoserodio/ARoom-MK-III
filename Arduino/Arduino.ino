@@ -22,8 +22,9 @@ extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 #define BLUE 4
 
 String message = "", strip_command = "clear", strip_status = "clear";
-bool strip_color = false, strip_music = false;
+bool strip_color = true, strip_music = false;
 bool light = false, light_old = false;
+bool send_status = false;
 int light_noread = 0;
 
 int rcv_bass = 0, rcv_level = 0;
@@ -126,15 +127,18 @@ void loop() {
     else if(message.indexOf("b_slider:") != -1){
       b_slider = message.substring(9).toInt();
     }
+    else if(message.equals("get_status/")){
+      sendStatus();
+    }
     message = "";
   }
   if(light_noread == 0){
-    sendLightStatus();
+    sendLightStatus(false);
   }else{
     light_noread--;
   }
   handleStrip();
-  sendStatus();
+  //digitalWrite(RELAY_FAN, HIGH);
   delay(20);
   rcv_bass = 0;
 }
@@ -146,32 +150,40 @@ void sendStatus(){
     Serial.println("response fan_off");
   }
   //Fita de led
-  if(strip_status.equals("clear")){
-    Serial.println("response strip_music_off");
-    Serial.println("response strip_color_off");
-  }
-  else if(strip_status.equals("music")){
-    Serial.println("response strip_music_on");
-    Serial.println("response strip_color_off");
-  }
-  else if(strip_status.equals("color")){
-    Serial.println("response strip_color_on");
-    Serial.println("response strip_music_off");
-  }
+  // if(strip_status.equals("clear")){
+  //   Serial.println("response strip_music_off");
+  //   Serial.println("response strip_color_off");
+  // }
+  // else if(strip_status.equals("music")){
+  //   Serial.println("response strip_music_on");
+  //   Serial.println("response strip_color_off");
+  // }
+  // else if(strip_status.equals("color")){
+  //   Serial.println("response strip_color_on");
+  //   Serial.println("response strip_music_off");
+  // }
+  sendLightStatus(true);
 }
 
-void sendLightStatus(){
+void sendLightStatus(bool ignore_change){
   if(analogRead(LIGHT_STATUS) >= 400){
     light = true;
   }else{
     light = false;
   }
-  if(light != light_old){
+  if((light != light_old) && (!ignore_change)){
     if(light){
       Serial.println("response light_on");
     }else{
       Serial.println("response light_off");
     }
     light_old = light;
+  }
+  else if (ignore_change){
+    if(light){
+      Serial.println("response light_on");
+    }else{
+      Serial.println("response light_off");
+    }
   }
 }
