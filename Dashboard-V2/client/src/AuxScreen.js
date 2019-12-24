@@ -11,12 +11,12 @@ export default class AuxScreen extends React.Component {
   constructor(){
     super();
     this.state = {
-      time: {hours: new Date().getHours(),
-             minutes: new Date().getMinutes(),
-             seconds: new Date().getSeconds(),
-             day: new Date().getDay(),
-             date: new Date().getDate(),
-             month: new Date().getMonth(),},
+      time: {hours: '',
+             minutes: '',
+             seconds: '',
+             day: '',
+             date: '',
+             month: ''},
     };
   }
 
@@ -32,12 +32,12 @@ export default class AuxScreen extends React.Component {
   }
 
   time() {
-    let hours_ = new Date().getHours()+1;
-    let minutes_ = new Date().getMinutes();
-    let seconds_ = new Date().getSeconds();
-    if(hours_ < 10) hours_ = '0'+hours_;
-    if(minutes_ < 10) minutes_ = '0'+minutes_;
-    if(seconds_ < 10) seconds_ = '0'+seconds_;
+    let hours = new Date().getHours()+1;
+    let minutes = new Date().getMinutes();
+    let seconds = new Date().getSeconds();
+    if(hours < 10) hours = '0'+hours;
+    if(minutes < 10) minutes = '0'+minutes;
+    if(seconds < 10) seconds = '0'+seconds;
     let day = new Date().getDay();
     let date = new Date().getDate();
     let month = new Date().getMonth();
@@ -46,9 +46,9 @@ export default class AuxScreen extends React.Component {
     month = dateFormater.formateMonth(month);
 
     this.setState({
-      time: {hours: hours_,
-             minutes: minutes_,
-             seconds: seconds_,
+      time: {hours: hours,
+             minutes: minutes,
+             seconds: seconds,
              day: day,
              date: date,
              month: month}

@@ -8,7 +8,6 @@ export default class Weather extends React.Component {
   constructor(){
     super();
     this.state = {
-      fullData: '',
       dailyData: '',
       weatherData: {
         weekday: [],
@@ -42,7 +41,6 @@ export default class Weather extends React.Component {
       .then(data => {
       const dailyData = data.list.filter(reading => reading.dt_txt.includes("18:00:00"))
         this.setState({
-          fullData: data.list,
           dailyData: dailyData
         })
       for(let i = 0; i < 3; i++){
@@ -76,32 +74,26 @@ export default class Weather extends React.Component {
     return iconURL+"@2x.png";
   }
 
+  renderCard(index){
+    return [
+      <div className="day">
+        <h3>{this.state.weatherData.weekday[index]}</h3>
+        <h6>{this.state.weatherData.day[index]}&nbsp;{this.state.weatherData.month[index]}</h6>
+        <img src={this.state.weatherData.icon[index]} height="80" width="80" className="wimg"/>
+        <h4>{this.state.weatherData.temperature[index]} ºC</h4>
+        <h4>{this.state.weatherData.weather[index]}</h4>
+      </div>
+    ]
+  }
+
   render() {
     return(
       <div id="weather">
-          <li><div className="day">
-            <h3>{this.state.weatherData.weekday[0]}</h3>
-            <h6>{this.state.weatherData.day[0]}&nbsp;{this.state.weatherData.month[0]}</h6>
-            <img src={this.state.weatherData.icon[0]} height="80" width="80" className="wimg"/>
-            <h4>{this.state.weatherData.temperature[0]} ºC</h4>
-            <h4>{this.state.weatherData.weather[0]}</h4>
-          </div></li>
-          <div className="separator"></div>
-          <li><div className="day">
-            <h3>{this.state.weatherData.weekday[1]}</h3>
-            <h6>{this.state.weatherData.day[1]}&nbsp;{this.state.weatherData.month[1]}</h6>
-            <img src={this.state.weatherData.icon[1]} height="80" width="80" className="wimg"/>
-            <h4>{this.state.weatherData.temperature[1]} ºC</h4>
-            <h4>{this.state.weatherData.weather[1]}</h4>
-          </div></li>
-          <div className="separator"></div>
-          <li><div className="day">
-          <h3>{this.state.weatherData.weekday[2]}</h3>
-          <h6>{this.state.weatherData.day[2]}&nbsp;{this.state.weatherData.month[2]}</h6>
-          <img src={this.state.weatherData.icon[2]} height="80" width="80" className="wimg"/>
-          <h4>{this.state.weatherData.temperature[2]} ºC</h4>
-          <h4>{this.state.weatherData.weather[2]}</h4>
-          </div></li>
+        {this.renderCard(0)}
+        <div className="separator"></div>
+        {this.renderCard(1)}
+        <div className="separator"></div>
+        {this.renderCard(2)}
       </div>
     );
   }
