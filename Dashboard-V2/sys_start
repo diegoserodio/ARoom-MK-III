@@ -1,0 +1,5 @@
+#!/bin/bash
+# Script to setup node server and client server
+
+supervisor server.js
+npm start --prefix client/

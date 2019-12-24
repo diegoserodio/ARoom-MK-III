@@ -1,0 +1,116 @@
+#element::-webkit-scrollbar {
+    display: none;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
+.main{
+  background: url(aux_back.jpg);
+  background-size: cover;
+  display: inline-block;
+  height: 100vh;
+  width: 100vw;
+}
+
+div, img{
+  float: left;
+}
+
+li {
+  list-style-type: none;
+}
+
+#clock{
+  position: absolute;
+  left: 1%;
+  top: 5%;
+  color: white;
+  font-size:100px;
+  /* margin-left: 3%;
+  margin-top: 3%; */
+  -webkit-text-stroke-width: 1px;
+  -webkit-text-stroke-color: #333;
+}
+
+#date{
+  position: absolute;
+  top: 20%;
+  left: 3%;
+  color: white;
+  font-size:50px;
+  margin-left: 10%;
+  -webkit-text-stroke-width: 1.5px;
+  -webkit-text-stroke-color: #333;
+}
+
+/* #room_stats{
+  position: absolute;
+  left: 40%;
+  background: rgba(105, 105, 105, .3);
+  border-radius: 15px;
+  color: white;
+  font-size: 20px;
+  margin-top: 6%;
+  margin-left: 0;
+  padding: 10px;
+  width: 400px;
+}
+
+.relay{
+  margin-right: 55%;
+}
+
+#led_indicator{
+  height: 20px;
+  width: 40px;
+  background-color: white;
+  border-style: solid;
+  border-width: 2px;;
+  border-color: #c0c0c0;
+  border-radius: 10px;
+} */
+
+/* #weather{
+  position: absolute;
+  left: 70%;
+  background: rgba(105, 105, 105, .3);
+  border-radius: 15px;
+  color: white;
+  margin-top: 6%;
+  margin-left: 0;
+  padding: 0px;
+  text-align: center;
+}
+
+.day{
+  margin-top: 5px;
+  width: 350px;
+}
+
+.wimg{
+  margin-right: 150px;
+  margin-left: 135px;
+}
+
+.separator{
+  background-color: #ccc;
+  border-radius: 100px;
+  margin-left: 50px;
+  width: 250px;
+  height: 2px;
+} */
+
+#calendar{
+  position: absolute;
+  left: 40%;
+  top: 27%;
+  width: 400px;
+  height: 72%;
+  padding: 10px;
+  background: rgba(105, 105, 105, .3);
+  border-radius: 15px;
+  color: white;
+  text-align: center;
+}

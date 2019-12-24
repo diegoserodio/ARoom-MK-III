@@ -1,0 +1,15 @@
+.eventSeparator{
+  background-color: #ccc;
+  border-radius: 100px;
+  width: 320px;
+  height: 2px;
+}
+
+.eventCard{
+  border-radius: 10px;
+  background: rgba(105,105,105, .3);
+  text-align: left;
+  margin: 10px;
+  padding: 10px;
+  width: 300px;
+}

@@ -1,55 +1,44 @@
 import React, { Component } from 'react';
+import { Button, Nav, Navbar, NavbarBrand, NavItem, NavLink } from 'reactstrap';
 import logo from './logo.svg';
 import './App.css';
 import './Styles/normalize.css';
-import SideBar from './sidebar';
 import Home from './home';
-// import socketIOClient from 'socket.io-client'
+import AuxScreen from './AuxScreen';
 
 // Making the App component
 class App extends Component {
   constructor() {
     super();
-    // this.state = {
-    //   endpoint: "192.168.15.10:4001",
-    //   received: ''
-    // };
-    //
-    // this.socket = socketIOClient(this.state.endpoint);
-
+    this.state = {
+      screen: 0,
+    };
   }
-
-  // sending sockets
-  // send = (topic, data) => {
-  //   const socket = socketIOClient(this.state.endpoint);
-  //   var command = {data: data};
-  //   socket.emit(topic, command);
-  // }
-  ///
 
   // render method that renders in code if the state is updated
   render() {
-    // this.socket.on('arduino', (data) => {
-    //   if(data.indexOf('response') != -1){
-    // 		if(data.indexOf('light_on') != -1){
-    //       this.setState({
-    //         received: 'Light On'
-    //       });
-    // 		}
-    //     else if(data.indexOf('light_off') != -1){
-    //       this.setState({
-    //         received: 'Light Off'
-    //       });
-    // 		}
-    //   }
-    // })
+    if(this.state.screen == 0){
     return (
-      <div>
-      <script src="https://sdk.scdn.co/spotify-player.js"></script>
-        <SideBar />
+        <div>
+        <div className="sidebar">
+        <Navbar light>
+          <Nav navbar vertical>
+            <NavbarBrand>ARoom</NavbarBrand>
+            <NavLink href="#">Home</NavLink>
+            <NavLink href="#" onClick={() => this.setState({screen: 1})}>AUX Screen</NavLink>
+          </Nav>
+        </Navbar>
+        </div>
+
         <Home />
-      </div>
-    )
+        </div>
+    )}
+
+    else if(this.state.screen == 1){
+      return (
+        <AuxScreen />
+      )
+    }
   }
 }
 

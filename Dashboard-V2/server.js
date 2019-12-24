@@ -29,3 +29,13 @@ io.on('connection', function newConnection(socket) {
     serialport.write(new Buffer(command.data+'/'));
   });
 });
+
+// const fetch = require('node-fetch');
+//
+// const weatherURL =
+// `http://api.openweathermap.org/data/2.5/forecast?id=3471291&APPID=3c4cd77d32d078ed79bda23362cc591d`
+//
+// fetch(weatherURL)
+//   .then(res => res.text())
+//   .then(data => console.log("Data List Loaded", data))
+//   .catch(error => console.dir(error));

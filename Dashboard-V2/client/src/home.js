@@ -15,7 +15,7 @@ export default class Home extends React.Component {
   constructor(){
     super();
     this.state = {
-      endpoint: "192.168.15.11:4001",
+      endpoint: "192.168.15.14:4001",
       received: '',
       light_img: light_off,
       fan_img: fan_off,
@@ -24,11 +24,14 @@ export default class Home extends React.Component {
       green: 0,
       blue: 0,
       active_tab: '1',
+
+      greeting: '',
     };
     this.socket = socketIOClient(this.state.endpoint);
     this.old_command = "";
     this.send('serial', 'get_status');
   }
+
 
   // sending sockets
   send = (topic, data) => {
@@ -64,6 +67,17 @@ export default class Home extends React.Component {
     var command = 'b_slider:'+event.target.value;
     this.send('serial', command);
   }
+
+  componentDidMount() {
+    this.getTime();
+  }
+
+  getTime = () => {
+    var time = new Date().getHours();
+    if(time >= 18) this.setState({greeting: 'Boa noite!'});
+    else if(time >= 12) this.setState({greeting: 'Boa tarde!'});
+    else this.setState({greeting: 'Bom dia!'});
+  };
 
   render() {
     this.socket.on('arduino', (data) => {
@@ -120,6 +134,12 @@ export default class Home extends React.Component {
             <Button color="danger" onClick={() => this.send('serial', 'fan_off')}>Desligar</Button>
             </p>
           </CardBody>
+          </Card>
+        </div>
+
+        <div className="card_div" id="weather_div">
+          <Card>
+          <h1>{this.state.greeting}</h1>
           </Card>
         </div>
       </p>
