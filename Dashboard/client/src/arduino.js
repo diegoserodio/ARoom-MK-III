@@ -11,7 +11,7 @@ export default class Relay extends React.Component {
   constructor(){
     super();
     this.state = {
-      endpoint: "192.168.15.14:4001",
+      endpoint: "192.168.15.12:4001",
       light_img: off,
       fan_img: off,
       ledstrip: {
@@ -64,9 +64,15 @@ export default class Relay extends React.Component {
             let red = parseInt(data.substring(17, 20))-100;
             let green = parseInt(data.substring(27, 30))-100;
             let blue = parseInt(data.substring(36, 39))-100;
-            this.state.ledstrip.red = red;
-            this.state.ledstrip.green = green;
-            this.state.ledstrip.blue = blue;
+            if(red == 300 && green == 300 && blue == 300){
+              this.state.ledstrip.red = 200;
+              this.state.ledstrip.green = 200;
+              this.state.ledstrip.blue = 200;
+            }else{
+              this.state.ledstrip.red = red;
+              this.state.ledstrip.green = green;
+              this.state.ledstrip.blue = blue;
+            }
     		  }
         }
         this.old_command = data;

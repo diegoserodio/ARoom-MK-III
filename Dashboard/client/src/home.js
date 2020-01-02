@@ -15,7 +15,7 @@ export default class Home extends React.Component {
   constructor(){
     super();
     this.state = {
-      endpoint: "192.168.15.14:4001",
+      endpoint: "192.168.15.12:4001",
       received: '',
       light_img: light_off,
       fan_img: fan_off,

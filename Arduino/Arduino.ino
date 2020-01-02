@@ -23,18 +23,13 @@ extern const TProgmemPalette16 myRedWhiteBluePalette_p PROGMEM;
 
 #define MIC A7
 
-String message = "", strip_command = "clear", strip_status = "clear";
+String message = "";
 bool strip_color = true, strip_music = false;
 bool light = false, light_old = false;
-bool send_status = false;
 int light_noread = 0;
 
-float rcv_bass = 0, rcv_level = 0;
 int r_slider = 0, g_slider = 0, b_slider = 0;
 float noise = 120;
-
-bool first_clap = false, second_clap = false;
-long first_clap_start = 0.0, second_clap_start = 0.0;
 
 void setup() {
   pinMode(RELAY_A, OUTPUT);
@@ -88,56 +83,26 @@ void loop() {
       Serial.println("response fan_off");
     }
     if(message.equals("strip_music_on/")){
-      strip_command = "music_on";
-      strip_status = "music";
       strip_music = true;
       strip_color = false;
-      Serial.println("response strip_music_on");
-      sendStatus();
-    }
-    else if(message.equals("strip_music_off/")){
-      strip_command = "clear";
-      strip_status = "clear";
-      strip_music = false;
-      strip_color = false;
-      Serial.println("response strip_music_off");
+      Serial.println("response led red:400 green:400 blue:400");
     }
     else if(message.equals("strip_color_on/")){
-      strip_command = "strip_color_on";
-      strip_status = "color";
       strip_music = false;
       strip_color = true;
-      Serial.println("response strip_color_on");
-      sendStatus();
+      Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
     }
-    else if(message.equals("strip_color_off/")){
-      strip_command = "clear";
-      strip_status = "clear";
-      strip_music = false;
-      strip_color = false;
-      Serial.println("response strip_color_off");
-    }
-    else if(message.indexOf("red") != -1 || message.indexOf("green") != -1 || message.indexOf("blue") != -1){
-      strip_command = message;
-      // Serial.println("response color update");
-    }
-//    else if(message.indexOf("bass:") != -1){
-//      rcv_bass = message.substring(5).toInt();
-//    }
-//    else if(message.indexOf("level:") != -1){
-//      rcv_level = message.substring(6).toInt();
-//    }
     else if(message.indexOf("r_slider:") != -1){
       r_slider = message.substring(9).toInt();
-      sendStatus();
+      Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
     }
     else if(message.indexOf("g_slider:") != -1){
       g_slider = message.substring(9).toInt();
-      sendStatus();
+      Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
     }
     else if(message.indexOf("b_slider:") != -1){
       b_slider = message.substring(9).toInt();
-      sendStatus();
+      Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
     }
     else if(message.equals("get_status/")){
       sendStatus();
@@ -150,10 +115,7 @@ void loop() {
     light_noread--;
   }
   handleStrip();
-  if(!strip_music)handleClaps();
-  //digitalWrite(RELAY_FAN, HIGH);
   delay(20);
-//  rcv_bass = 0;
 }
 
 void sendStatus(){
@@ -164,12 +126,17 @@ void sendStatus(){
     Serial.println("response fan_off");
   }
   //Fita de led
-  if(strip_status.equals("music")){
-    Serial.println("response led red:200 green:200 blue:200");
+  if(strip_music){
+    Serial.println("response led red:400 green:400 blue:400");
   }else{
     Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
   }
-  sendLightStatus(true);
+  //Lâmpada
+  if(analogRead(LIGHT_STATUS) >= 400){
+    Serial.println("response light_on");
+  }else{
+    Serial.println("response light_off");
+  }
 }
 
 void sendLightStatus(bool ignore_change){
@@ -191,63 +158,6 @@ void sendLightStatus(bool ignore_change){
       Serial.println("response light_on");
     }else{
       Serial.println("response light_off");
-    }
-  }
-}
-
-void handleClaps(){
-  float signal_max = 0;
-  float signal_min = 1023;
-  int sample_window = 50, average_window = 10;
-  float clap_interval = 300, claps_end_validation = 500;
-  unsigned long start = millis();
-  while(millis() - start < sample_window){
-    float data = analogRead(MIC);
-
-    if(data > signal_max){
-      signal_max = data;
-    }
-    if(data < signal_min){
-      signal_min = data;
-    }
-  }
-
-  float amplitude = (signal_max - signal_min)*(5.0/1023.0);
-
-  float average = 0;
-  float old_amp = 0, new_amp = 0;
-  for(int i = 0; i < 2; i++){
-    for(int j = 0; j < average_window; j++){
-      average += analogRead(MIC)*(5.0/1023.0);
-    }
-    average = average/average_window;
-    if(i == 0) old_amp = average;
-    else new_amp = average;
-  }
-  float average_diff = new_amp-old_amp;
-  if(average_diff < 0) average_diff = 0;
-
-  long between_claps = millis() - first_clap_start;
-  if(between_claps > clap_interval) first_clap = false;
-
-  long after_claps = millis() - second_clap_start;
-  if(after_claps > claps_end_validation && second_clap){
-    first_clap = false;
-    second_clap = false;
-    digitalWrite(RELAY_LIGHT, digitalRead(!RELAY_LIGHT));
-  }
-
-  if(amplitude >= 0.8 && average_diff > 0.00){
-    if(!first_clap && !second_clap){
-      first_clap = true;
-      first_clap_start = millis();
-    }
-    else if(!second_clap){
-      second_clap = true;
-      second_clap_start = millis();
-    }else{
-      first_clap = false;
-      second_clap = false;
     }
   }
 }
