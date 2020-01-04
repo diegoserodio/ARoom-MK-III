@@ -11,6 +11,10 @@ const serialport = new SerialPort('/dev/ttyACM0', { baudRate: 250000 });
 const parser = new Readline();
 serialport.pipe(parser);
 
+// EVA
+const {Wit, log} = require('node-wit');
+const client = new Wit({accessToken: 'JG2IEWS64CS6D7CH4245E3DPWSLBK6D4'});
+
 let stats = {
   light: false,
   fan: false,
@@ -49,4 +53,14 @@ io.on('connection', function newConnection(socket) {
     console.log('Sending Arduino command:', command);
     serialport.write(new Buffer(command.data+'/'));
   });
+  socket.on('eva', function handleEVA(command) {
+    console.log('Received EVA command:', command);
+  });
 });
+
+
+// client.message('Ligue o ventilador', {})
+// .then((data) => {
+//   console.log('Yay, got Wit.ai response: ' + JSON.stringify(data));
+// })
+// .catch(console.error);

@@ -12,6 +12,7 @@
     "react-speech": "^1.0.2",
     "react-speech-recognition": "^2.0.4",
     "reactstrap": "^8.2.0",
+    "socket.io": "^2.3.0",
     "speak-tts": "^2.0.8"
   },
   "scripts": {
@@ -34,5 +35,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "http://192.168.15.12:4001"
 }
