@@ -32,7 +32,7 @@ export default class AuxScreen extends React.Component {
   }
 
   time() {
-    let hours = new Date().getHours()+1;
+    let hours = new Date().getHours();
     let minutes = new Date().getMinutes();
     let seconds = new Date().getSeconds();
     if(hours < 10) hours = '0'+hours;

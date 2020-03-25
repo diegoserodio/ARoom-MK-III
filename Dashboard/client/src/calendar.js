@@ -65,6 +65,7 @@ export default class Calendar extends React.Component {
         });
       }
 
+
       /**
        * Print the summary and start datetime/date of the next ten events in
        * the authorized user's calendar. If no events are found an
@@ -77,12 +78,13 @@ export default class Calendar extends React.Component {
           'timeMin': (new Date()).toISOString(),
           'showDeleted': false,
           'singleEvents': true,
-          'maxResults': 10,
+          'maxResults': 3,
           'orderBy': 'startTime'
         }).then(function(response) {
           var events = response.result.items;
           if (events.length > 0) {
             that.setState({ events: events });
+            console.log(events);
           } else {
             console.log('No upcoming events found.');
           }
@@ -90,6 +92,16 @@ export default class Calendar extends React.Component {
       }
 
       getEvents(event){
+        let date = event.start.date;
+        if(date == null){
+          let _date = new Date(event.start.dateTime);
+          let year = _date.getFullYear();
+          let month = _date.getMonth()+1;
+          let day = _date.getDate();
+          if(day<10) day = '0'+day;
+          if(month<10) month = '0'+month;
+          date = year+'-'+month+'-'+day;
+        }
         let startHour = new Date(event.start.dateTime).getHours();
         let startMin = new Date(event.start.dateTime).getMinutes();
         let endHour = new Date(event.end.dateTime).getHours();
@@ -103,7 +115,8 @@ export default class Calendar extends React.Component {
             <div className="eventSeparator"></div>
             <div className="eventCard">
               <h3>{event.summary}</h3>
-              <h6>Começo:&nbsp;{startHour}:{startMin}&nbsp;&nbsp;Término:&nbsp;{endHour}:{endMin}</h6>
+              <h6>Data:&nbsp;{date}</h6>
+              {startHour ? <h6>Começo:&nbsp;{startHour}:{startMin}&nbsp;&nbsp;Término:&nbsp;{endHour}:{endMin}</h6> : <h6>Dia todo</h6>}
             </div>
           </div>
         ];

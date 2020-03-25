@@ -11,7 +11,7 @@ export default class Relay extends React.Component {
   constructor(){
     super();
     this.state = {
-      endpoint: "192.168.15.12:4001",
+      endpoint: "192.168.15.16:4001",
       light_img: off,
       fan_img: off,
       ledstrip: {
