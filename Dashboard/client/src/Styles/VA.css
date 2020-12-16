@@ -1,0 +1,39 @@
+.togglecontainer{
+  border-radius: 200px;
+  border: 2px solid rgba(100,100,100, .5);
+  background: rgba(100,100,100, .5);
+  position: absolute;
+  bottom: 5%;
+  left: 2%;
+}
+
+.togglecontainer:hover{
+  cursor: pointer;
+  border: 2px solid #eee;
+}
+
+.textbox{
+  background-color: #fff;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 12px;
+  color: #666;
+}
+
+#user{
+  position: absolute;
+  bottom: 12%;
+  left: 11%;
+}
+
+#vaTop{
+  position: absolute;
+  bottom: 7%;
+  left: 11%;
+}
+
+#vaBot{
+  position: absolute;
+  bottom: 4.5%;
+  left: 11%;
+}

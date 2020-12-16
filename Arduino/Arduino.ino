@@ -47,6 +47,7 @@ void setup() {
   currentPalette = RainbowColors_p;
   currentBlending = LINEARBLEND;
   delay(500);
+  digitalWrite(RELAY_FAN, LOW);
 }
 
 void loop() {
@@ -74,7 +75,7 @@ void loop() {
         Serial.println("response light_off");
       }
     }
-    if(message.equals("fan_on/")){
+    else if(message.equals("fan_on/")){
       digitalWrite(RELAY_FAN, HIGH);
       Serial.println("response fan_on");
     }
@@ -82,7 +83,7 @@ void loop() {
       digitalWrite(RELAY_FAN, LOW);
       Serial.println("response fan_off");
     }
-    if(message.equals("strip_music_on/")){
+    else if(message.equals("strip_music_on/")){
       strip_music = true;
       strip_color = false;
       Serial.println("response led red:400 green:400 blue:400");
@@ -91,6 +92,11 @@ void loop() {
       strip_music = false;
       strip_color = true;
       Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
+    }
+    else if(message.equals("strip_off/")){
+      strip_music = false;
+      strip_color = false;
+      Serial.println("response led red:100 green:100 blue:100");
     }
     else if(message.indexOf("r_slider:") != -1){
       r_slider = message.substring(9).toInt();
@@ -102,6 +108,14 @@ void loop() {
     }
     else if(message.indexOf("b_slider:") != -1){
       b_slider = message.substring(9).toInt();
+      Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
+    }
+    else if(message.indexOf("rgb:") != -1){
+      strip_music = false;
+      strip_color = true;
+      r_slider = message.substring(4,7).toInt()-100;
+      g_slider = message.substring(8,11).toInt()-100;
+      b_slider = message.substring(12).toInt()-100;
       Serial.println("response led red:"+String(r_slider+100)+" green:"+String(g_slider+100)+" blue:"+String(b_slider+100));
     }
     else if(message.equals("get_status/")){
